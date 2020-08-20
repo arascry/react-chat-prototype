@@ -9,30 +9,42 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      value: 'Send message',
       endpoint: 'http://localhost:3001'
     }
   }
 
-  componentDidMount() {
+  handleChange = (event) => {
+    this.setState({ value: event.target.value });
+  }
+
+  handleChatSubmit = (event) => {
+    event.preventDefault();
+    alert('Submitted');
     const { endpoint } = this.state;
     const socket = socketClient(endpoint);
-    socket.emit('chat message', 'test');
+    console.log("Triggered");
+    socket.emit('chat message', this.state.value);
   }
+
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          {/*<Switch>
+          <Switch>
             <Route exact path='/' render={() =>
               <LandingPage />
             } />
             <Route exact path='/chat' render={props =>
               <ChatPage
                 {...props}
+                value={this.state.value}
+                handleChange={this.handleChange}
+                handleChatSubmit={this.handleChatSubmit}
               />
             } />
-          </Switch>*/}
+          </Switch>
         </header>
       </div>
     );
